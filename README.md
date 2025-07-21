@@ -23,14 +23,18 @@ The project follows an ELT (Extract, Load, Transform) architecture:
 3.  **Analysis & Reporting:**
     * The transformed data in Snowflake can then be connected to Business Intelligence (BI) tools (e.g., Looker Studio, Power BI, Tableau) for dashboarding and reporting.
 
-## Technologies Used
+## 🧰 Tech Stack
 
-* **Cloud Storage:** Amazon S3
-* **Cloud Data Warehouse:** Snowflake
-* **Data Transformation Tool:** DBT (Data Build Tool)
-* **Database:** SQL
-* **Version Control:** Git / GitHub
-* **Local Development Environment:** Visual Studio Code, Python Virtual Environments
+| Component     | Tool                     |
+|--------------|--------------------------|
+| Cloud Storage | Amazon S3                |
+| Data Warehouse | Snowflake               |
+| Transformation | dbt (open-source core)  |
+| Dataset       | MovieLens 20M            |
+| Language      | SQL + YAML               |
+| IDE           | VS Code + dbt CLI        |
+
+---
 
 ## Setup and Installation
 
@@ -42,7 +46,7 @@ Follow these steps to set up the project locally and connect to your cloud resou
 
 2.  **Create an S3 Bucket:**
     * Go to the S3 service in your AWS Console.
-    * Click "Create bucket" and provide a **globally unique** name (e.g., `yourname-netflix-dbt-data`).
+    * Click "Create bucket" and provide a **globally unique** name (e.g., `netflix-dataset-sachin`).
     * Choose a region close to you.
     * Keep default settings for now (or adjust as per your security requirements).
 
@@ -50,6 +54,8 @@ Follow these steps to set up the project locally and connect to your cloud resou
     * Download the MovieLens 20M dataset from [grouplens.org/datasets/movielens/20m/](https://grouplens.org/datasets/movielens/20m/).
     * Extract the `ml-20m.zip` file.
     * Upload the following CSV files from the extracted folder to your S3 bucket: `links.csv`, `movies.csv`, `ratings.csv`, `tags.csv`, `genome-scores.csv`, `genome-tags.csv`.
+    <img width="1867" height="792" alt="Screenshot 2025-07-21 142827" src="https://github.com/user-attachments/assets/7f77cc23-b236-4a19-af0e-4847cff284c5" />
+
 
 4.  **Create IAM User for Snowflake Access:**
     * Go to IAM service in your AWS Console.
@@ -134,25 +140,88 @@ Follow these steps to set up the project locally and connect to your cloud resou
     * For each CSV file uploaded to S3, create a corresponding table in the `MOVIELENS.RAW` schema and load data using `COPY INTO`.
     * Example for `movies.csv`:
 
-    ```sql
-    USE WAREHOUSE COMPUTE_WH;
-    USE DATABASE MOVIELENS;
-    USE SCHEMA RAW;
+   ```sql
+    -- Set Defaults
+USE WAREHOUSE COMPUTE_WH;
+USE DATABASE MOVIELENS;
+USE SCHEMA RAW;
 
-    CREATE OR REPLACE TABLE RAW_MOVIES (
-        MOVIEID INTEGER,
-        TITLE VARCHAR,
-        GENRES VARCHAR
-    );
+-- Integrating Data from S3
+CREATE OR REPLACE STAGE netflixstage
+URL = 's3://netflix-dataset-sachin'
+CREDENTIALS=(AWS_KEY_ID='AKI***MQMAKFB**HUWD*' AWS_SECRET_KEY='x9k34UT/l42UAVyqhI5m8eli3P3TFcw3SxvUvxkd')
 
-    COPY INTO RAW_MOVIES
-    FROM @NETFLIX_STAGE/movies.csv
-    FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = ',' SKIP_HEADER = 1 FIELD_OPTIONALLY_ENCLOSED_BY = '"');
+-- Load raw movies
+CREATE OR REPLACE TABLE raw_movies (
+    movieID INTEGER,
+    title STRING,
+    genres STRING
+)
 
-    -- Repeat for ratings.csv, tags.csv, links.csv, genome-scores.csv, genome-tags.csv
-    -- Adjust table schema and file names accordingly.
-    ```
-    * Refer to the original project source for full schema definitions and `COPY INTO` commands for all files.
+COPY INTO raw_movies
+FROM @netflixstage/movies.csv
+FILE_FORMAT = (TYPE='CSV' SKIP_HEADER = 1 FIELD_OPTIONALLY_ENCLOSED_BY = '"');
+
+SELECT * FROM raw_movies;
+
+-- Load raw ratings
+CREATE OR REPLACE TABLE raw_ratings (
+    userId INTEGER,
+    movieID INTEGER,
+    rating FLOAT,
+    timestamp BIGINT   
+)
+
+COPY INTO raw_ratings
+FROM @netflixstage/ratings.csv
+FILE_FORMAT = (TYPE='CSV' SKIP_HEADER = 1 FIELD_OPTIONALLY_ENCLOSED_BY = '"');
+
+--Load raw tags
+CREATE OR REPLACE TABLE raw_tags (
+    userID INTEGER,
+    movieID INTEGER,
+    tag STRING,
+    timestamp BIGINT
+)
+
+COPY INTO raw_tags
+FROM @netflixstage/tags.csv
+FILE_FORMAT = (TYPE='CSV' SKIP_HEADER = 1 FIELD_OPTIONALLY_ENCLOSED_BY = '"')
+ON_ERROR = 'CONTINUE';
+
+-- Load raw genome scores
+CREATE OR REPLACE TABLE raw_genome_scores (
+    movieID INTEGER,
+    tagID INTEGER,
+    relevance FLOAT
+)
+
+COPY INTO raw_genome_scores
+FROM @netflixstage/genome-scores.csv
+FILE_FORMAT = (TYPE='CSV' SKIP_HEADER = 1 FIELD_OPTIONALLY_ENCLOSED_BY = '"');
+
+--Load raw genome tags
+CREATE OR REPLACE TABLE raw_genome_tags (
+    tagId INTEGER,
+    tag STRING
+)
+
+COPY INTO raw_genome_tags
+FROM @netflixstage/genome-tags.csv
+FILE_FORMAT = (TYPE='CSV' SKIP_HEADER = 1 FIELD_OPTIONALLY_ENCLOSED_BY = '"')
+
+-- Load raw links
+CREATE OR REPLACE TABLE raw_links (
+    movieId INTEGER,
+    imdbId INTEGER,
+    tmdbId INTEGER
+)
+
+COPY INTO raw_links
+FROM @netflixstage/links.csv
+FILE_FORMAT = (TYPE='CSV' SKIP_HEADER = 1 FIELD_OPTIONALLY_ENCLOSED_BY = '"')
+
+   ```
 
 
 ## How to Run
