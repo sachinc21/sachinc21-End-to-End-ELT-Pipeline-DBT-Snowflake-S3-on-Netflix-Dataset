@@ -230,38 +230,43 @@ Navigate to the root of your `netflix-dbt-analysis` directory in your terminal (
     dbt run
     ```
     This command will execute all models, creating views and tables in your Snowflake `DEV` schema based on their materialization configurations.
+    <img width="1154" height="795" alt="Screenshot 2025-07-21 231614" src="https://github.com/user-attachments/assets/b8ab7b75-401c-49d9-9ac4-67d3817fb09a" />
 
-2.  **Run Specific Models:**
+
+3.  **Run Specific Models:**
     ```bash
     dbt run --select dim_movies
     dbt run --select fact_ratings
     ```
 
-3.  **Run DBT Seeds (if new seed files are added):**
+4.  **Run DBT Seeds (if new seed files are added):**
     ```bash
     dbt seed
     ```
 
-4.  **Run DBT Snapshots (to capture SCD Type 2 changes):**
+5.  **Run DBT Snapshots (to capture SCD Type 2 changes):**
     ```bash
     dbt snapshot
     ```
     * To observe changes, first modify data in a source table (e.g., `src_tags` in Snowflake), then run `dbt snapshot` again. Query the `MOVIELENS.SNAPSHOTS.SNAP_TAGS` table to see the `dbt_valid_from` and `dbt_valid_to` columns.
 
-5.  **Run DBT Tests:**
+6.  **Run DBT Tests:**
     ```bash
     dbt test
     ```
     This will execute all generic and singular tests defined in `schema.yml` and the `tests/` directory.
 
-6.  **Generate and Serve Documentation:**
+7.  **Generate and Serve Documentation:**
     ```bash
     dbt docs generate
     dbt docs serve
     ```
     Open your web browser to the URL provided (usually `http://localhost:8080`) to explore the project's documentation, data catalog, and lineage graph.
+    <img width="1866" height="835" alt="Screenshot 2025-07-16 215218" src="https://github.com/user-attachments/assets/e923d544-49ae-43e3-84d9-c2e5c6fa0446" />
 
-7.  **Compile Analysis Files:**
+    <img width="1868" height="835" alt="Screenshot 2025-07-16 220915" src="https://github.com/user-attachments/assets/f9c2846d-4e41-4050-b9dc-1c9f3b8142f3" />
+
+9.  **Compile Analysis Files:**
     ```bash
     dbt compile
     ```
