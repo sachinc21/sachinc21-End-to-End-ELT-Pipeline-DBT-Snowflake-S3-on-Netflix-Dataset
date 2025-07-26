@@ -1,11 +1,11 @@
-# End-to-End-ELT-Pipeline-S3-Snowflake-DBT-on-Netflix-Dataset
+# 🎬 End-to-End-ELT-Pipeline-S3-Snowflake-DBT-on-Netflix-Dataset
 This repository contains an end-to-end ELT pipeline project focusing on transforming and modeling a simulated Netflix dataset (MovieLens) using **DBT (Data Build Tool)**, **Snowflake** as the data warehouse, and **Amazon S3** for data storage. The project demonstrates a modern ELT (Extract, Load, Transform) pipeline, emphasizing data quality, modularity, and robust data modeling practices.
 
-## Project Overview
+## 📝 Project Overview
 
 The primary objective of this project is to showcase the capabilities of DBT in building a scalable and maintainable data transformation layer. We take raw MovieLens data, load it into Snowflake, and then use DBT to apply various transformations, create a dimensional model, ensure data quality through testing, and generate comprehensive documentation. This project is a practical demonstration of data engineering best practices for analytics.
 
-## Architecture
+## 🛠️ Architecture
 
 The project follows an ELT (Extract, Load, Transform) architecture:
 
@@ -25,18 +25,18 @@ The project follows an ELT (Extract, Load, Transform) architecture:
 
 ## 🧰 Tech Stack
 
-| Component     | Tool                     |
-|--------------|--------------------------|
-| Cloud Storage | Amazon S3                |
-| Data Warehouse | Snowflake               |
-| Transformation | dbt (open-source core)  |
-| Dataset       | MovieLens 20M            |
-| Language      | SQL + YAML               |
-| IDE           | VS Code + dbt CLI        |
+| Component         | Tool                    |
+|-------------------|------------------------|
+| ☁️ Cloud Storage  | Amazon S3               |
+| 🧊 Data Warehouse | Snowflake               |
+| 🔷 Transformation | dbt (open-source core)  |
+| 🎞 Dataset        | MovieLens 20M           |
+| 💻 Language       | SQL + YAML              |
+| 🖥️ IDE            | VS Code + dbt CLI       |
 
 ---
 
-## Setup and Installation
+## 🚀 Setup and Installation
 
 Follow these steps to set up the project locally and connect to your cloud resources.
 
@@ -267,7 +267,7 @@ Navigate to the root of your `netflix-dbt-analysis` directory in your terminal (
     ```
     This compiles the SQL in your `analyses/` folder into executable SQL, which can then be copied and run directly in Snowflake or used by other tools. Compiled files are found in the `target/compiled/netflix/analyses/` directory.
 
-## Key DBT Concepts Demonstrated
+## 🧩 Key DBT Concepts Demonstrated
 
 * **Models:** SQL `SELECT` statements that define data transformations.
 * **Materializations:** Strategies for persisting models in the data warehouse (e.g., `view`, `table`, `incremental`, `ephemeral`).
@@ -280,4 +280,3 @@ Navigate to the root of your `netflix-dbt-analysis` directory in your terminal (
 * **Sources:** Defining and documenting raw data sources in the data warehouse.
 * **Packages:** Leveraging community-contributed DBT functionality (e.g., `dbt-utils`).
 
->>>>>>> 9bf0b538f204835b473e61e12d03824f6b6ad421
