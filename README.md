@@ -54,6 +54,7 @@ Follow these steps to set up the project locally and connect to your cloud resou
     * Download the MovieLens 20M dataset from [grouplens.org/datasets/movielens/20m/](https://grouplens.org/datasets/movielens/20m/).
     * Extract the `ml-20m.zip` file.
     * Upload the following CSV files from the extracted folder to your S3 bucket: `links.csv`, `movies.csv`, `ratings.csv`, `tags.csv`, `genome-scores.csv`, `genome-tags.csv`.
+      
     <img width="1867" height="792" alt="Screenshot 2025-07-21 142827" src="https://github.com/user-attachments/assets/7f77cc23-b236-4a19-af0e-4847cff284c5" />
 
 
@@ -230,6 +231,7 @@ Navigate to the root of your `netflix-dbt-analysis` directory in your terminal (
     dbt run
     ```
     This command will execute all models, creating views and tables in your Snowflake `DEV` schema based on their materialization configurations.
+    
     <img width="1154" height="795" alt="Screenshot 2025-07-21 231614" src="https://github.com/user-attachments/assets/b8ab7b75-401c-49d9-9ac4-67d3817fb09a" />
 
 
@@ -262,6 +264,7 @@ Navigate to the root of your `netflix-dbt-analysis` directory in your terminal (
     dbt docs serve
     ```
     Open your web browser to the URL provided (usually `http://localhost:8080`) to explore the project's documentation, data catalog, and lineage graph.
+    
     <img width="1866" height="835" alt="Screenshot 2025-07-16 215218" src="https://github.com/user-attachments/assets/e923d544-49ae-43e3-84d9-c2e5c6fa0446" />
 
     <img width="1868" height="835" alt="Screenshot 2025-07-16 220915" src="https://github.com/user-attachments/assets/f9c2846d-4e41-4050-b9dc-1c9f3b8142f3" />
