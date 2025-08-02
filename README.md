@@ -57,7 +57,6 @@ Follow these steps to set up the project locally and connect to your cloud resou
       
     <img width="1867" height="792" alt="Screenshot 2025-07-21 142827" src="https://github.com/user-attachments/assets/7f77cc23-b236-4a19-af0e-4847cff284c5" />
 
-
 4.  **Create IAM User for Snowflake Access:**
     * Go to IAM service in your AWS Console.
     * Create a new user (e.g., `snowflake-s3-user`).
